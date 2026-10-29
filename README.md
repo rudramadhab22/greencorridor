@@ -98,8 +98,6 @@ greencorridor/
 
 ## Getting started
 
-Skeleton only — application code and runtime setup will be added next.
-
 ```bash
 # Clone
 git clone https://github.com/rudramadhab22/greencorridor.git
@@ -107,11 +105,19 @@ cd greencorridor
 
 # Local secrets (never commit .env)
 cp .env.example .env
-# edit .env with your local MySQL user/password
+# edit .env with your values (DB + JWT_SECRET)
 
-# Optional MySQL via Docker (reads .env)
-docker compose up -d
+# Run backend + frontend with Docker against your local MySQL (mobile not included)
+# Ensure local MySQL is running first
+docker compose up --build
 ```
+
+- Backend API: http://localhost:8080  
+- Swagger UI: http://localhost:8080/swagger-ui.html  
+- Frontend: http://localhost:5173  
+- Database: local MySQL (not a Docker DB image)
+
+See `infrastructure/docker/README.md` for details.
 
 ## License
 
