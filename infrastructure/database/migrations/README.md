@@ -1,6 +1,6 @@
 # Database migrations
 
-Flyway migrations for PostgreSQL + PostGIS.
+Flyway migrations for MySQL 8.
 
 Canonical runtime location for the Spring Boot app:
 

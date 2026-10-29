@@ -17,7 +17,7 @@ Modular monolith with a separate simulation engine and independent clients:
 | Backend | Java 21 + Spring Boot |
 | Security | Spring Security + JWT |
 | Persistence | Spring Data JPA + Hibernate |
-| Database | PostgreSQL + PostGIS |
+| Database | MySQL 8 (local; credentials via `.env`) |
 | Migrations | Flyway |
 | Web dashboard | React + Vite |
 | Mobile app | Flutter |
@@ -47,8 +47,8 @@ Modular monolith with a separate simulation engine and independent clients:
                        |
              +---------+---------+
              |                   |
-       PostgreSQL +          WebSocket
-          PostGIS            Live Updates
+          MySQL +            WebSocket
+                             Live Updates
 
        EXTERNAL / SUPPORTING ENGINES
        +----------------------------+
@@ -105,7 +105,11 @@ Skeleton only — application code and runtime setup will be added next.
 git clone https://github.com/rudramadhab22/greencorridor.git
 cd greencorridor
 
-# Infrastructure (when configured)
+# Local secrets (never commit .env)
+cp .env.example .env
+# edit .env with your local MySQL user/password
+
+# Optional MySQL via Docker (reads .env)
 docker compose up -d
 ```
 
