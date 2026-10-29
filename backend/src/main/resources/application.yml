@@ -22,6 +22,13 @@ spring:
 server:
   port: ${SERVER_PORT:8080}
 
+greencorridor:
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      issuer: ${JWT_ISSUER:greencorridor}
+      access-token-expiry-minutes: ${JWT_ACCESS_TOKEN_EXPIRY_MINUTES:60}
+
 springdoc:
   api-docs:
     path: /api-docs
