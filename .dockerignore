@@ -1,0 +1,11 @@
+.git
+.idea
+**/.env
+**/node_modules
+**/target
+**/dist
+**/build
+mobile
+docs
+*.md
+!infrastructure/docker/README.md

@@ -1,27 +1,32 @@
 services:
-  mysql:
-    image: mysql:8.4
-    container_name: greencorridor-mysql
+  backend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.backend
+    container_name: greencorridor-backend
     env_file:
       - .env
     environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      # Reach MySQL on the host machine (not a MySQL container)
+      DB_HOST: host.docker.internal
+      DB_PORT: ${DB_PORT:-3306}
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:${DB_PORT:-3306}/${DB_NAME}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SERVER_PORT: 8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
-      - "${DB_PORT:-3306}:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u${DB_USERNAME}", "-p${DB_PASSWORD}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "${SERVER_PORT:-8080}:8080"
 
-  # Placeholders for supporting engines (wired up in later iterations)
-  # osrm:
-  # sumo:
-
-volumes:
-  mysql_data:
+  frontend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.frontend
+    container_name: greencorridor-frontend
+    depends_on:
+      - backend
+    environment:
+      VITE_API_PROXY: http://backend:8080
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    # Mobile Flutter app is intentionally not included in this stack.
+    # Database: local MySQL on the host (see DB_* in .env). No MySQL image.
